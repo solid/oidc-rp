@@ -14,7 +14,8 @@
     "dist": "webpack --progress --colors --optimize-minimize",
     "prepublish": "npm run build && npm run dist && npm run test",
     "preversion": "npm test",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "npm run build"  
   },
   "repository": {
     "type": "git",
