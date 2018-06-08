@@ -307,6 +307,12 @@ class RelyingParty extends JSONDocument {
    *   Registration parameter or via another mechanism. If supplied, the OP
    *   SHOULD honor this request following the logout.
    *
+   *   Note: The requirement to validate the uri for previous registration means
+   *   that, in practice, the `id_token_hint` is REQUIRED if
+   *   `post_logout_redirect_uri` is used. Otherwise, the OP has no way to get
+   *   the `client_id` to load the saved client registration, to validate the
+   *   uri. The only way it can get it is by decoding the `id_token_hint`.
+   *
    * @param [options.state] {string} OPTIONAL. Opaque value used by the RP to
    *   maintain state between the logout request and the callback to the
    *   endpoint specified by the `post_logout_redirect_uri` query parameter. If
@@ -329,6 +335,10 @@ class RelyingParty extends JSONDocument {
     assert(configuration, 'OpenID Configuration is not initialized')
     assert(configuration.end_session_endpoint,
       'OpenID Configuration is missing end_session_endpoint.')
+
+    if (post_logout_redirect_uri && !id_token_hint) {
+      throw new Error('id_token_hint is required when using post_logout_redirect_uri')
+    }
 
     const params = {}
 
