@@ -314,6 +314,10 @@ class RelyingParty extends JSONDocument {
    *   using the `state` query parameter when redirecting the User Agent back to
    *   the RP.
    *
+   * TODO: In the future, consider adding `response_mode` param, for the OP to
+   *   determine how to return the `state` back the RP.
+   *   @see http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html#ResponseModes
+   *
    * @returns {string} Logout uri
    */
   logoutRequest (options = {}) {
