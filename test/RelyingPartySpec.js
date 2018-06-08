@@ -244,6 +244,61 @@ describe('RelyingParty', () => {
     })
   })
 
+  describe('logoutRequest', () => {
+    it('should error on missing OpenID Configuration', () => {
+      const rp = new RelyingParty()
+      const logoutRequest = rp.logoutRequest.bind(rp)
+
+      logoutRequest.should.throw(/OpenID Configuration is not initialized/)
+    })
+
+    it('should error on missing end_session_endpoint', () => {
+      const options = {
+        provider: {
+          configuration: { issuer: 'https://forge.anvil.io' }
+        }
+      }
+      const rp = new RelyingParty(options)
+      const logoutRequest = rp.logoutRequest.bind(rp)
+
+      logoutRequest.should.throw(/OpenID Configuration is missing end_session_endpoint/)
+    })
+
+    it('should return end_session_endpoint if no other params given', () => {
+      const options = {
+        provider: {
+          configuration: {
+            end_session_endpoint: 'https://example.com/logout'
+          }
+        }
+      }
+      const rp = new RelyingParty(options)
+
+      expect(rp.logoutRequest()).to.equal('https://example.com/logout')
+    })
+
+    it('should compose logout request params into url', () => {
+      const rpOptions = {
+        provider: {
+          configuration: {
+            end_session_endpoint: 'https://example.com/logout'
+          }
+        }
+      }
+      const rp = new RelyingParty(rpOptions)
+
+      const options = {
+        id_token_hint: 't0ken',
+        post_logout_redirect_uri: 'https://app.com/goodbye',
+        state: '$tate'
+      }
+
+      const expectedLogoutUrl = 'https://example.com/logout?id_token_hint=t0ken&post_logout_redirect_uri=https%3A%2F%2Fapp.com%2Fgoodbye&state=%24tate'
+
+      expect(rp.logoutRequest(options)).to.equal(expectedLogoutUrl)
+    })
+  })
+
   describe('logout', () => {
     it('should reject with missing OpenID Configuration', () => {
       let rp = new RelyingParty()
