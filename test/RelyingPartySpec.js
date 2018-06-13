@@ -252,16 +252,15 @@ describe('RelyingParty', () => {
       logoutRequest.should.throw(/OpenID Configuration is not initialized/)
     })
 
-    it('should error on missing end_session_endpoint', () => {
+    it('should return null on missing end_session_endpoint', () => {
       const options = {
         provider: {
           configuration: { issuer: 'https://forge.anvil.io' }
         }
       }
       const rp = new RelyingParty(options)
-      const logoutRequest = rp.logoutRequest.bind(rp)
 
-      logoutRequest.should.throw(/OpenID Configuration is missing end_session_endpoint/)
+      expect(rp.logoutRequest()).to.be.null()
     })
 
     it('should return end_session_endpoint if no other params given', () => {

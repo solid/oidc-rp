@@ -286,9 +286,17 @@ class RelyingParty extends JSONDocument {
    * Composes and returns the logout request URI, based on the OP's
    * `end_session_endpoint`, with appropriate parameters.
    *
+   * Note: Calling client code has the responsibility to clear the local
+   * session state (for example, by calling `rp.clearSession()`). In addition,
+   * some IdPs (such as Google) may not provide an `end_session_endpoint`,
+   * in which case, this method will return null.
+   *
    * @see https://openid.net/specs/openid-connect-session-1_0.html#RPLogout
    *
-   * @throws {Error} If `end_session_endpoint` is missing from provider config
+   * @throws {Error} If provider config is not initialized
+   *
+   * @throws {Error} If `post_logout_redirect_uri` was provided without a
+   *   corresponding `id_token_hint`
    *
    * @param [options={}] {object}
    *
@@ -324,7 +332,10 @@ class RelyingParty extends JSONDocument {
    *   determine how to return the `state` back the RP.
    *   @see http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html#ResponseModes
    *
-   * @returns {string} Logout uri
+   * TODO: Handle special cases for popular providers (Google, MSFT)
+   *
+   * @returns {string|null} Logout uri (or null if no end_session_endpoint was
+   *   provided in the IdP config)
    */
   logoutRequest (options = {}) {
     const { id_token_hint, post_logout_redirect_uri, state } = options
@@ -333,8 +344,12 @@ class RelyingParty extends JSONDocument {
     assert(this.provider, 'OpenID Configuration is not initialized')
     configuration = this.provider.configuration
     assert(configuration, 'OpenID Configuration is not initialized')
-    assert(configuration.end_session_endpoint,
-      'OpenID Configuration is missing end_session_endpoint.')
+
+    if (!configuration.end_session_endpoint) {
+      console.log(`OpenId Configuration for ` +
+        `${configuration.issuer} is missing end_session_endpoint`)
+      return null
+    }
 
     if (post_logout_redirect_uri && !id_token_hint) {
       throw new Error('id_token_hint is required when using post_logout_redirect_uri')
