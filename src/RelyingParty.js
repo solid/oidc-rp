@@ -11,6 +11,7 @@ const AuthenticationRequest = require('./AuthenticationRequest')
 const AuthenticationResponse = require('./AuthenticationResponse')
 const RelyingPartySchema = require('./RelyingPartySchema')
 const onHttpError = require('./onHttpError')
+const FormUrlEncoded = require('./FormUrlEncoded')
 
 /**
  * RelyingParty
@@ -280,7 +281,105 @@ class RelyingParty extends JSONDocument {
   }
 
   /**
+   * logoutRequest
+   *
+   * Composes and returns the logout request URI, based on the OP's
+   * `end_session_endpoint`, with appropriate parameters.
+   *
+   * Note: Calling client code has the responsibility to clear the local
+   * session state (for example, by calling `rp.clearSession()`). In addition,
+   * some IdPs (such as Google) may not provide an `end_session_endpoint`,
+   * in which case, this method will return null.
+   *
+   * @see https://openid.net/specs/openid-connect-session-1_0.html#RPLogout
+   *
+   * @throws {Error} If provider config is not initialized
+   *
+   * @throws {Error} If `post_logout_redirect_uri` was provided without a
+   *   corresponding `id_token_hint`
+   *
+   * @param [options={}] {object}
+   *
+   * @param [options.id_token_hint] {string} RECOMMENDED.
+   *   Previously issued ID Token passed to the logout endpoint as
+   *   a hint about the End-User's current authenticated session with the
+   *   Client. This is used as an indication of the identity of the End-User
+   *   that the RP is requesting be logged out by the OP. The OP *need not* be
+   *   listed as an audience of the ID Token when it is used as an
+   *   `id_token_hint` value.
+   *
+   * @param [options.post_logout_redirect_uri] {string} OPTIONAL. URL to which
+   *   the RP is requesting that the End-User's User Agent be redirected after
+   *   a logout has been performed. The value MUST have been previously
+   *   registered with the OP, either using the `post_logout_redirect_uris`
+   *   Registration parameter or via another mechanism. If supplied, the OP
+   *   SHOULD honor this request following the logout.
+   *
+   *   Note: The requirement to validate the uri for previous registration means
+   *   that, in practice, the `id_token_hint` is REQUIRED if
+   *   `post_logout_redirect_uri` is used. Otherwise, the OP has no way to get
+   *   the `client_id` to load the saved client registration, to validate the
+   *   uri. The only way it can get it is by decoding the `id_token_hint`.
+   *
+   * @param [options.state] {string} OPTIONAL. Opaque value used by the RP to
+   *   maintain state between the logout request and the callback to the
+   *   endpoint specified by the `post_logout_redirect_uri` query parameter. If
+   *   included in the logout request, the OP passes this value back to the RP
+   *   using the `state` query parameter when redirecting the User Agent back to
+   *   the RP.
+   *
+   * TODO: In the future, consider adding `response_mode` param, for the OP to
+   *   determine how to return the `state` back the RP.
+   *   @see http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html#ResponseModes
+   *
+   * TODO: Handle special cases for popular providers (Google, MSFT)
+   *
+   * @returns {string|null} Logout uri (or null if no end_session_endpoint was
+   *   provided in the IdP config)
+   */
+  logoutRequest (options = {}) {
+    const { id_token_hint, post_logout_redirect_uri, state } = options
+    let configuration
+
+    assert(this.provider, 'OpenID Configuration is not initialized')
+    configuration = this.provider.configuration
+    assert(configuration, 'OpenID Configuration is not initialized')
+
+    if (!configuration.end_session_endpoint) {
+      console.log(`OpenId Configuration for ` +
+        `${configuration.issuer} is missing end_session_endpoint`)
+      return null
+    }
+
+    if (post_logout_redirect_uri && !id_token_hint) {
+      throw new Error('id_token_hint is required when using post_logout_redirect_uri')
+    }
+
+    const params = {}
+
+    if (id_token_hint) {
+      params.id_token_hint = id_token_hint
+    }
+    if (post_logout_redirect_uri) {
+      params.post_logout_redirect_uri = post_logout_redirect_uri
+    }
+    if (state) {
+      params.state = state
+    }
+
+    const url = new URL(configuration.end_session_endpoint)
+    url.search = FormUrlEncoded.encode(params)
+
+    return url.href
+  }
+
+  /**
    * Logout
+   *
+   * @deprecated
+   *
+   * TODO: Add deprecation warnings, then remove. Client code should
+   *   use `logoutRequest()` instead
    *
    * @returns {Promise}
    */
