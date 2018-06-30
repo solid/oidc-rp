@@ -360,13 +360,20 @@ class AuthenticationResponse {
    * @param response.params {object}
    * @param response.params.id_token {string} IDToken encoded as a JWT
    *
-   * @returns {Promise<AuthenticationResponse>} Chainable
+   * @returns {AuthenticationResponse} Chainable
    */
   static decodeIDToken (response) {
     let jwt = response.params.id_token
 
     if (jwt) {
-      response.decoded = IDToken.decode(jwt)
+      try {
+        response.decoded = IDToken.decode(jwt)
+      } catch (decodeError) {
+        const error = new HttpError(400, 'Error decoding ID Token')
+        error.cause = decodeError
+        error.info = { id_token: jwt }
+        throw error
+      }
     }
 
     return response

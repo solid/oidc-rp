@@ -494,6 +494,13 @@ describe('AuthenticationResponse', () => {
         .to.be.undefined()
     })
 
+    it('should throw an error on invalid id_token', () => {
+      response.params.id_token = 'inva1id'
+      expect(() => {
+        AuthenticationResponse.decodeIDToken(response)
+      }).to.throw('Error decoding ID Token')
+    })
+
     it('should return its argument', () => {
       AuthenticationResponse.decodeIDToken(response).should.equal(response)
     })
