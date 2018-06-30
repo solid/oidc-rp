@@ -166,18 +166,29 @@ describe('AuthenticationResponse', () => {
    * errorResponse
    */
   describe('errorResponse', () => {
-    it('should reject with error response', () => {
-      return AuthenticationResponse.errorResponse({
-        params: {
-          error: 'access_denied'
-        }
-      }).should.be.rejectedWith('access_denied')
+    it('should throw an error if error param is present', done => {
+      const errorParams = {
+        error: 'access_denied',
+        error_description: 'Access denied',
+        error_uri: 'https://example.com/123',
+        state: '$tate'
+      }
+      const response = new AuthenticationResponse({ params: {...errorParams} })
+      try {
+        AuthenticationResponse.errorResponse(response)
+      } catch (error) {
+        error.message.should
+          .equal('AuthenticationResponse error: access_denied')
+        error.info.should.eql(errorParams)
+        done()
+      }
     })
 
-    it('should resolve with its argument', () => {
-      let response = { params: {} }
-      return AuthenticationResponse.errorResponse(response)
-        .should.eventually.equal(response)
+    it('should return its argument if no errors', () => {
+      let response = new AuthenticationResponse({})
+
+      AuthenticationResponse.errorResponse(response)
+        .should.equal(response)
     })
   })
 
@@ -480,7 +491,7 @@ describe('AuthenticationResponse', () => {
     it('should ignore response without id_token', () => {
       delete response.params.id_token
       expect(AuthenticationResponse.decodeIDToken(response).decoded)
-        .to.be.undefined
+        .to.be.undefined()
     })
 
     it('should return its argument', () => {
