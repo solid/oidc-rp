@@ -488,12 +488,6 @@ describe('AuthenticationResponse', () => {
         .should.be.instanceof(JWT)
     })
 
-    it('should ignore response without id_token', () => {
-      delete response.params.id_token
-      expect(AuthenticationResponse.decodeIDToken(response).decoded)
-        .to.be.undefined()
-    })
-
     it('should throw an error on invalid id_token', () => {
       response.params.id_token = 'inva1id'
       expect(() => {
