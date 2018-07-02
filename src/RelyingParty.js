@@ -233,19 +233,21 @@ class RelyingParty extends JSONDocument {
    *
    * @param response {string} req.query or req.body.text
    * @param session {Session|Storage} req.session or localStorage or similar
-   * @returns {Promise<Object>} Custom response object, with `params` and
-   *   `mode` properties
+   *
+   * @returns {Promise<Session>}
    */
-  validateResponse (response, session) {
-    session = session || this.store
+  validateResponse (response, session = this.store) {
+    let options
 
     if (response.match(/^http(s?):\/\//)) {
-      response = { rp: this, redirect: response, session }
+      options = { rp: this, redirect: response, session }
     } else {
-      response = { rp: this, body: response, session }
+      options = { rp: this, body: response, session }
     }
 
-    return AuthenticationResponse.validateResponse(response)
+    const authResponse = new AuthenticationResponse(options)
+
+    return AuthenticationResponse.validateResponse(authResponse)
   }
 
   /**
