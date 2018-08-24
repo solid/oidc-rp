@@ -402,7 +402,7 @@ class RelyingParty extends JSONDocument {
     let uri = configuration.end_session_endpoint
     let method = 'get'
 
-    return fetch(uri, {method})
+    return fetch(uri, {method, credentials: 'include'})
       .then(onHttpError('Error logging out'))
 
     // TODO: Validate `frontchannel_logout_uri` if necessary
