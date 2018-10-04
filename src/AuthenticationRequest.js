@@ -5,7 +5,6 @@ const assert = require('assert')
 const base64url = require('base64url')
 const crypto = require('@trust/webcrypto')
 const { JWT } = require('@solid/jose')
-const FormUrlEncoded = require('./FormUrlEncoded')
 const { URL } = require('whatwg-url')
 
 /**
@@ -117,7 +116,9 @@ class AuthenticationRequest {
       // render the request URI and terminate the algorithm
       .then(() => {
         let url = new URL(endpoint)
-        url.search = FormUrlEncoded.encode(params)
+
+        // combine with any exists query parameters.
+        Object.entries(params).map((key, value) => url.searchParams.append(key, value))
 
         return url.href
       })
