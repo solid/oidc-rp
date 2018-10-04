@@ -118,7 +118,7 @@ class AuthenticationRequest {
         let url = new URL(endpoint)
 
         // combine with any exists query parameters.
-        Object.entries(params).map((key, value) => url.searchParams.append(key, value))
+        Object.entries(params).map(param => url.searchParams.append(param[0], param[1]))
 
         return url.href
       })
