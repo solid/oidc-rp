@@ -15,7 +15,7 @@ module.exports = {
   },
   externals: {
     'node-fetch': 'fetch',
-    'text-encoding': 'TextEncoder',
+    '@sinonjs/text-encoding': 'TextEncoder',
     'whatwg-url': 'window',
     'isomorphic-webcrypto': 'crypto'
   },

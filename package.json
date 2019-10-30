@@ -41,7 +41,6 @@
     "base64url": "^3.0.0",
     "node-fetch": "^2.1.2",
     "standard-http-error": "^2.0.1",
-    "text-encoding": "^0.6.4",
     "whatwg-url": "^6.4.1"
   },
   "devDependencies": {
