@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   mode: 'production',
   entry: [
-    './lib/index.js'
+    './src/index.js'
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -17,7 +17,7 @@ module.exports = {
     'node-fetch': 'fetch',
     'text-encoding': 'TextEncoder',
     'whatwg-url': 'window',
-    '@trust/webcrypto': 'crypto'
+    'isomorphic-webcrypto': 'crypto'
   },
   devtool: 'source-map'
 }
