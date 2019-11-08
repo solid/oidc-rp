@@ -1,6 +1,8 @@
 # OpenID Connect Relying Party _(oidc-rp)_
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![](https://img.shields.io/badge/project-Solid-7C4DFF.svg?style=flat-square)](https://github.com/solid/solid)
+[![Build Status](https://travis-ci.org/solid/oidc-rp.svg?branch=master&style=flat-square)](https://travis-ci.org/solid/oidc-rp)
+[![npm version](https://badge.fury.io/js/%40solid%2Foidc-rp.svg)](https://badge.fury.io/js/%40solid%2Foidc-rp)
 
 > OpenID Connect Relying Party for Node.js and the browser.
 
@@ -12,7 +14,7 @@
 - [ ] Key rotation using JWK `kid` value
 - [ ] Session management
 - [ ] front- and back-channel logout
-- [ ] Request parameters as JWT
+- [X] Request parameters as JWT
 - [ ] Claims request parameter
 - [ ] Claims language tags
 - [ ] OAuth 2.0 Bearer Token requests
@@ -26,7 +28,6 @@
   * [Node.js](#nodejs)
   * [Browser](#browser)
 * [Develop](#develop)
-* [API](#api)
 * [Maintainers](#maintainers)
 * [Contribute](#contribute)
 * [MIT License](#mit-license)
@@ -71,6 +72,20 @@ $ npm install
 
 ### Build
 
+**Important:**
+If you're using this library as a dependency and you plan to use Webpack, don't
+forget to add the following lines to your `webpack.config.js` `externals:` 
+section:
+
+```js
+  externals: {
+    'node-fetch': 'fetch',
+    '@sinonjs/text-encoding': 'TextEncoder',
+    'whatwg-url': 'window',
+    'isomorphic-webcrypto': 'crypto'
+  }
+```
+
 To build a Webpack-generated bundle:
 
 ```bash
@@ -80,13 +95,8 @@ npm run dist
 ### Test
 
 ```bash
-$ npm test        // Node.js
-$ npm run karma   // Karma (browser)
+npm test
 ```
-
-## API
-
-...
 
 ## Maintainers
 
@@ -102,7 +112,7 @@ $ npm run karma   // Karma (browser)
 
 ### Code of conduct
 
-* @trust/oidc-rp follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
+* @solid/oidc-rp follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 
 ### Contributors
 
