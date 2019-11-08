@@ -15,10 +15,9 @@ class TokenClaimsSet {
    * @param iat {number} Expiration (seconds since epoch, RFC3339)
    * @param [nbf] {number} Not Before (seconds since epoch, RFC3339)
    * @param [jti] {string} JWT Identifier
-   * @param [auth_time] {number} Time when user authn occurred (RFC3339)
    *
    * Claims specific to ID Token:
-   * @param [auth_time] {number}
+   * @param [auth_time] {number} Time when user authn occurred (RFC3339)
    * @param [nonce] {string}
    * @param [acr] {string} Authentication Context Class Reference
    * @param [amr] {string} Authentication Methods References
