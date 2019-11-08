@@ -4,6 +4,9 @@
   "description": "OpenID Connect Relying Party client library",
   "main": "./src/index.js",
   "module": "./src/index.js",
+  "engines": {
+    "node": ">=10"
+  },
   "files": [
     "dist",
     "src"
@@ -36,23 +39,24 @@
   },
   "homepage": "https://github.com/solid/oidc-rp",
   "dependencies": {
-    "@solid/jose": "solid/jose#swap-webcrypto",
-    "base64url": "^3.0.0",
-    "node-fetch": "^2.1.2",
+    "@solid/jose": "^0.5.0",
+    "base64url": "^3.0.1",
+    "isomorphic-webcrypto": "^2.3.2",
+    "node-fetch": "^2.6.0",
     "standard-http-error": "^2.0.1",
-    "whatwg-url": "^6.4.1"
+    "whatwg-url": "^7.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
-    "mocha": "^5.2.0",
-    "nock": "^9.3.0",
-    "sinon": "^5.1.0",
-    "sinon-chai": "^3.1.0",
-    "webpack": "^4.11.1",
-    "webpack-cli": "^3.0.2"
+    "mocha": "^6.2.2",
+    "nock": "^11.7.0",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   }
 }

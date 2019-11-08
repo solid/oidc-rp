@@ -315,7 +315,8 @@ describe('AuthenticationResponse', () => {
     })
 
     it('should not exchange code unless response type is exactly `code`', () => {
-      let tokenRequest = nock(providerUrl).post('/token').reply('200')
+      let tokenRequest = nock(providerUrl).post('/token')
+        .reply(200)
 
       response.request['response_type'] = 'code id_token token'
 
