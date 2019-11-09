@@ -1,6 +1,8 @@
 # OpenID Connect Relying Party _(oidc-rp)_
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![](https://img.shields.io/badge/project-Solid-7C4DFF.svg?style=flat-square)](https://github.com/solid/solid)
+[![Build Status](https://travis-ci.org/solid/oidc-rp.svg?branch=master&style=flat-square)](https://travis-ci.org/solid/oidc-rp)
+[![npm version](https://badge.fury.io/js/%40solid%2Foidc-rp.svg)](https://badge.fury.io/js/%40solid%2Foidc-rp)
 
 > OpenID Connect Relying Party for Node.js and the browser.
 
@@ -12,10 +14,9 @@
 - [ ] Key rotation using JWK `kid` value
 - [ ] Session management
 - [ ] front- and back-channel logout
-- [ ] Request parameters as JWT
+- [X] Request parameters as JWT
 - [ ] Claims request parameter
 - [ ] Claims language tags
-- [ ] ACDC and Proof of Possession
 - [ ] OAuth 2.0 Bearer Token requests
 
 ## Table of Contents
@@ -27,7 +28,6 @@
   * [Node.js](#nodejs)
   * [Browser](#browser)
 * [Develop](#develop)
-* [API](#api)
 * [Maintainers](#maintainers)
 * [Contribute](#contribute)
 * [MIT License](#mit-license)
@@ -72,6 +72,20 @@ $ npm install
 
 ### Build
 
+**Important:**
+If you're using this library as a dependency and you plan to use Webpack, don't
+forget to add the following lines to your `webpack.config.js` `externals:` 
+section:
+
+```js
+  externals: {
+    'node-fetch': 'fetch',
+    '@sinonjs/text-encoding': 'TextEncoder',
+    'whatwg-url': 'window',
+    'isomorphic-webcrypto': 'crypto'
+  }
+```
+
 To build a Webpack-generated bundle:
 
 ```bash
@@ -81,42 +95,14 @@ npm run dist
 ### Test
 
 ```bash
-$ npm test        // Node.js
-$ npm run karma   // Karma (browser)
+npm test
 ```
-
-## API
-
-...
 
 ## Maintainers
 
-...
+* Dmitri Zagidulin
 
 ## Contribute
-
-### Issues
-
-* please file [issues](https://github.com/solid/oidc-rp/issues) :)
-* for bug reports, include relevant details such as platform, version, relevant data, and stack traces
-* be sure to check for existing issues before opening new ones
-* read the documentation before asking questions
-* it's strongly recommended to open an issue before hacking and submitting a PR
-* we reserve the right to close an issue for excessive bikeshedding
-
-### Pull requests
-
-#### Policy
-
-* we're not presently accepting *unsolicited* pull requests
-* create an issue to discuss proposed features before submitting a pull request
-* create an issue to propose changes of code style or introduce new tooling
-* ensure your work is harmonious with the overall direction of the project
-* ensure your work does not duplicate existing effort
-* keep the scope compact; avoid PRs with more than one feature or fix
-* code review with maintainers is required before any merging of pull requests
-* new code must respect the style guide and overall architecture of the project
-* be prepared to defend your work
 
 #### Style guide
 
@@ -124,26 +110,9 @@ $ npm run karma   // Karma (browser)
 * Standard JavaScript
 * jsdocs
 
-#### Code reviews
-
-* required before merging PRs
-* reviewers SHOULD run the code under review
-
-### Collaborating
-
-#### Weekly project meeting
-
-* Thursdays from 1:00 PM to 2:00 Eastern US time at [TBD]
-* Join remotely with Google Hangouts
-
-#### Pair programming
-
-* Required for new contributors
-* Work directly with one or more members of the core development team
-
 ### Code of conduct
 
-* @trust/oidc-rp follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
+* @solid/oidc-rp follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 
 ### Contributors
 
@@ -152,4 +121,7 @@ $ npm run karma   // Karma (browser)
 
 ## MIT License
 
+[The MIT License](LICENSE.md)
+
 Copyright (c) 2016 Anvil Research, Inc.
+Copyright (c) 2017-2019 The Solid Project
