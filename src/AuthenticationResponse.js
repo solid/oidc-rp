@@ -3,7 +3,7 @@
  */
 const { URL } = require('whatwg-url')
 const assert = require('assert')
-const crypto = require('isomorphic-webcrypto')
+let crypto = require('isomorphic-webcrypto')
 const base64url = require('base64url')
 const fetch = require('node-fetch')
 const Headers = fetch.Headers ? fetch.Headers : global.Headers
@@ -12,6 +12,11 @@ const IDToken = require('./IDToken')
 const Session = require('./Session')
 const onHttpError = require('./onHttpError')
 const HttpError = require('standard-http-error')
+
+// FIXME:
+if (!crypto.subtle && !!crypto.default) {
+  crypto = crypto.default
+}
 
 /**
  * AuthenticationResponse
