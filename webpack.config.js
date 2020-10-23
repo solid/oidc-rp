@@ -19,5 +19,10 @@ module.exports = {
     'whatwg-url': 'window',
     'isomorphic-webcrypto': 'crypto'
   },
+  resolve: {
+    fallback: {
+      "assert": require.resolve("assert/")
+    }
+  },
   devtool: 'source-map'
 }
