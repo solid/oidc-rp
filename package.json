@@ -16,6 +16,7 @@
     "dist": "webpack --progress",
     "prepare": "npm run dist && npm run test",
     "preversion": "npm test",
+    "postversion": "git push --follow-tags",
     "test": "mocha --timeout=10000 --recursive"
   },
   "repository": {
