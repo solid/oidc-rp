@@ -41,24 +41,24 @@
   },
   "homepage": "https://github.com/solid/oidc-rp",
   "dependencies": {
-    "@solid/jose": "^0.6.5",
+    "@solid/jose": "^0.6.6",
     "assert": "^2.0.0",
     "base64url": "^3.0.1",
     "node-fetch": "^2.6.1",
     "standard-http-error": "^2.0.1",
-    "whatwg-url": "^8.4.0"
+    "whatwg-url": "^8.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
-    "mocha": "^8.2.1",
-    "nock": "^13.0.6",
-    "sinon": "^9.2.4",
-    "sinon-chai": "^3.5.0",
-    "webpack": "^5.18.0",
-    "webpack-cli": "^4.4.0"
+    "mocha": "^9.0.0",
+    "nock": "^13.1.0",
+    "sinon": "^11.1.1",
+    "sinon-chai": "^3.7.0",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.2"
   }
 }
